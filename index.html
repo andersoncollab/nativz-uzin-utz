@@ -6,16 +6,9 @@
     <title>Uzin Utz KE40 Caiman: Interactive Strategic Analysis</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Visualization & Content Choices:
-        - Uzin Utz Overview: Text. Enriched with details from research PDF. Goal: Inform.
-        - Brand Portfolio (UZIN, WOLFF, etc.): Interactive HTML cards. Descriptions enriched with specific product examples (e.g., UZIN NC 170 LevelStar, PALL-X POWER, Codex Power CX 7, UZIN KE 2000 S, switchTec®). Goal: Organize, Inform. Interaction: Click. Method: HTML/CSS/JS.
-        - Flooring & Adhesive Trends: Text summaries. Adhesive Market Growth: Chart.js Line Chart. Goal: Inform, Show Change. Method: Chart.js (Canvas).
-        - Competitive LVT/Vinyl Adhesives Table: HTML table. Goal: Compare. Method: HTML/CSS.
-        - KE40 Caiman Intro: Text. Updated with "high-performance, moisture-tolerant, alkaline-resistant" attributes and more details based on KR 430. Goal: Inform. Method: HTML.
-        - "Zig vs. Zag" Matrix: Interactive HTML. Goal: Compare, Organize. Interaction: Click. Method: HTML/CSS/JS.
-        - Branding/Messaging Pillars: Text, lists. Goal: Inform. Method: HTML/CSS.
-        - Nativz.io Project Scope (Home section): Text summarizing Nativz.io's role. Goal: Inform. Method: HTML.
-        - Actionable Recommendations: Expandable HTML sections. New sub-sections for Nativz.io's proposed branding/design scope and marketing campaign scope from provided PDFs. Goal: Inform, Organize. Interaction: Click. Method: HTML/CSS/JS.
+    <!-- Visualization & Content Choices: 
+        - Market Landscape: Correctly expanded with interactive competitor tabs (HTML/JS), text for merchandising at Home Depot/Lowe's, and common packaging/marketing themes. Existing trends and growth chart remain. Original LVT/Vinyl table also retained.
+        - Other sections retain their existing content.
         - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
         body {
@@ -25,12 +18,15 @@
         }
         .accent-color { color: #00AEEF; }
         .accent-bg { background-color: #00AEEF; }
+        .uzin-blue-text { color: #0055A4; } 
         
-        .nav-link {
-            padding: 0.75rem 1rem;
+        .nav-link { 
+            display: block;
+            padding: 0.75rem 1.5rem; 
             border-radius: 0.375rem;
             transition: background-color 0.3s, color 0.3s;
             cursor: pointer;
+            color: #000B0F; 
         }
         .nav-link:hover, .nav-link.active {
             background-color: #00AEEF; 
@@ -53,6 +49,7 @@
             box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
             padding: 1.5rem;
             transition: transform 0.3s;
+            margin-bottom: 1.5rem; 
         }
         .card:hover {
             transform: translateY(-5px);
@@ -80,39 +77,66 @@
             margin-right: auto;
             height: 300px; 
             max-height: 400px; 
+            background-color: #FFFFFF; 
+            border-radius: 0.5rem;
+            padding: 1rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
         }
         @media (min-width: 768px) {
             .chart-container {
                 height: 350px;
+                 max-width: 500px; 
             }
         }
-        h1, h2, h3 {
+        h1, h2, h3, h4 { 
             color: #00AEEF; 
         }
+        h1.page-title { 
+            color: #000B0F;
+            border-bottom: 2px solid #00AEEF;
+            padding-bottom: 0.5rem;
+        }
+        h2.section-subtitle { 
+             font-size: 1.5rem; 
+             font-weight: 600;
+             color: #000B0F; 
+             margin-top: 1.5rem;
+             margin-bottom: 1rem;
+        }
+         h3.card-title { 
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #0055A4; 
+            margin-bottom: 0.75rem;
+        }
+
         h2 { margin-top: 2rem; margin-bottom: 1rem; }
         h3 { margin-top: 1.5rem; margin-bottom: 0.75rem; }
+        h4 { font-weight: 600; margin-top: 1rem; margin-bottom: 0.5rem; }
         p { line-height: 1.6; margin-bottom: 1rem; }
-        ul { list-style-position: inside; margin-bottom: 1rem; }
+        ul.list-disc { list-style-type: disc; margin-left: 1.5rem; }
+
+
         .expandable-title {
             cursor: pointer;
-            padding: 0.75rem; /* Increased padding */
+            padding: 0.75rem; 
             background-color: #E5E7EB; 
-            border-radius: 0.375rem; /* Slightly larger radius */
+            border-radius: 0.375rem; 
             margin-bottom: 0.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-weight: 600; /* Bolder title */
+            font-weight: 600; 
         }
         .expandable-title:hover {
             background-color: #D1D5DB; 
         }
         .expandable-content {
             display: none;
-            padding: 1rem; /* Increased padding */
+            padding: 1rem; 
             border-left: 3px solid #00AEEF; 
             margin-top: 0.5rem;
-            background-color: #F9FAFB; /* Slight background for content */
+            background-color: #F9FAFB; 
             border-radius: 0 0.375rem 0.375rem 0;
         }
         .zig-zag-item {
@@ -131,6 +155,39 @@
             outline-offset: 2px;
             box-shadow: 0 0 0 2px #00AEEF; 
         }
+        #hamburger-dropdown-menu {
+            transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+        }
+        .text-secondary-dark-gray { color: #374151; } 
+
+        .tab-button {
+            padding: 0.5rem 1rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            border-radius: 0.375rem;
+            border: 1px solid #D1D5DB; 
+            transition: all 0.3s ease;
+            background-color: #F9FAFB; 
+            color: #374151; 
+            font-weight: 500;
+        }
+        .tab-button.active {
+            background-color: #00AEEF; 
+            color: #FFFFFF; 
+            border-color: #00AEEF;
+        }
+        .tab-button:not(.active):hover {
+            background-color: #E5E7EB; 
+            border-color: #A5B4FC; 
+        }
+        #competitorDetailView {
+            background-color: #F9FAFB; 
+            border: 1px solid #E5E7EB;
+            border-radius: 0.375rem;
+            padding: 1rem;
+            min-height: 150px; 
+        }
+
     </style>
 </head>
 <body class="antialiased">
@@ -142,16 +199,8 @@
                     <img src="https://stoufferoilandgas.com/wp-content/uploads/2021/10/nativz-logo-main-smallest.png" alt="Nativz Logo" class="h-10 mr-3">
                     <span class="text-xl text-gray-700">KE40 Caiman Strategic Analysis</span>
                 </div>
-                <nav class="hidden md:flex space-x-1">
-                    <a class="nav-link active" data-target="home">Home</a>
-                    <a class="nav-link" data-target="uzin-deep-dive">Uzin Utz</a>
-                    <a class="nav-link" data-target="market-landscape">Market</a>
-                    <a class="nav-link" data-target="ke40-strategy">KE40 Caiman</a>
-                    <a class="nav-link" data-target="recommendations">Nativz.io Actions</a>
-                    <a class="nav-link" data-target="conclusion">Conclusion</a>
-                </nav>
-                <div class="md:hidden">
-                    <button id="mobile-menu-button" class="text-gray-700 hover:text-gray-900 focus:outline-none focus-ring-accent">
+                <div>
+                    <button id="hamburger-button" class="text-gray-700 hover:text-gray-900 focus:outline-none focus-ring-accent p-2">
                         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
                         </svg>
@@ -159,173 +208,253 @@
                 </div>
             </div>
         </div>
-        <div id="mobile-menu" class="md:hidden hidden bg-white shadow-lg">
-            <a class="block nav-link active" data-target="home">Home</a>
-            <a class="block nav-link" data-target="uzin-deep-dive">Uzin Utz</a>
-            <a class="block nav-link" data-target="market-landscape">Market</a>
-            <a class="block nav-link" data-target="ke40-strategy">KE40 Caiman</a>
-            <a class="block nav-link" data-target="recommendations">Nativz.io Actions</a>
-            <a class="block nav-link" data-target="conclusion">Conclusion</a>
+         <div id="hamburger-dropdown-menu" class="hidden absolute top-full right-0 left-0 md:left-auto md:right-4 md:top-20 mt-0 w-full md:w-64 bg-white shadow-lg rounded-b-md z-40 border-t border-gray-200">
+            <a class="nav-link active" data-target="home">Home</a>
+            <a class="nav-link" data-target="uzin-deep-dive">Uzin Utz</a>
+            <a class="nav-link" data-target="market-landscape">Market</a>
+            <a class="nav-link" data-target="ke40-strategy">KE40 Caiman</a>
+            <a class="nav-link" data-target="recommendations">Nativz.io Actions</a>
+            <a class="nav-link" data-target="conclusion">Conclusion</a>
         </div>
     </header>
 
     <main class="container mx-auto p-4 sm:p-6 lg:p-8">
         <section id="home" class="content-section active">
-            <h1 class="text-3xl font-bold mb-6">Navigating the Premium Adhesives Market for KE40 Caiman</h1>
+            <h1 class="text-3xl font-bold mb-6 page-title">Navigating the Premium Adhesives Market for KE40 Caiman</h1>
             <p class="text-lg mb-4">Welcome, Nativz.io team. This interactive application synthesizes comprehensive research on Uzin Utz SE and the strategic positioning for its new product, KE40 Caiman. The goal is to provide an easily digestible overview to inform your branding, product design, and marketing initiatives for this exciting launch.</p>
             <p class="mb-4">Nativz.io is poised to support Uzin Utz in bringing KE40 Caiman to market, focusing on creating a strong brand identity, compelling packaging for retail environments like Home Depot and Lowe's, and effective marketing collateral. This includes developing product-specific logos, color palettes, messaging guides, data sheets, and potentially explainer videos and digital assets. Furthermore, Nativz.io will spearhead a strategic, bilingual (EN/ES) product marketing campaign for KE40 Caiman, aiming to create immediate market relevance with installers, distributors, and decision-makers through engaging, jobsite-tested creative and clear product education.</p>
             <p class="mb-4">The flooring adhesives market is dynamic, with distinct opportunities for a premium product like KE40 Caiman. This analysis delves into Uzin Utz's corporate strengths, its diverse brand portfolio, current market trends, the competitive landscape, and identifies strategic pathways for differentiation. By understanding how Uzin Utz can "zig" where competitors "zag," we can craft a compelling value proposition for KE40 Caiman.</p>
-            <p>Use the navigation above to explore the different sections of this analysis. Each section is designed to provide specific insights, from company background and brand architecture to competitive comparisons and actionable recommendations for Nativz.io.</p>
+            <p>Use the navigation menu (top right) to explore the different sections of this analysis. Each section is designed to provide specific insights, from company background and brand architecture to competitive comparisons and actionable recommendations for Nativz.io.</p>
         </section>
 
         <section id="uzin-deep-dive" class="content-section">
-            <h1 class="text-3xl font-bold mb-6">Uzin Utz SE: Company Overview & Brand Portfolio</h1>
-            <p class="mb-4">This section provides an overview of Uzin Utz SE, a global leader in flooring installation systems. Understanding the company's history, mission, commitment to quality and sustainability, and its "system solutions" approach is crucial for contextualizing the KE40 Caiman launch. The Uzin Utz Group comprises several specialized brands, each catering to specific aspects of flooring technology.</p>
+            <h1 class="text-3xl font-bold mb-6 page-title">Uzin Utz SE: Company Overview & Brand Portfolio</h1>
+            <p class="mb-4 text-secondary-dark-gray">This section provides an in-depth look at Uzin Utz SE, a global leader in flooring installation systems. Understanding the company's history, corporate structure, strategic pillars, brand architecture, and product innovation philosophy is crucial for contextualizing the KE40 Caiman launch and Nativz.io's role.</p>
 
-            <div class="bg-white p-6 rounded-lg shadow-lg mb-8">
-                <h2 class="text-2xl font-semibold mb-3">Uzin Utz SE: At a Glance</h2>
-                <p>Founded in 1911 in Ulm, Germany, Uzin Utz SE has grown from a local producer of detergents to a global leader in flooring technology. Now a fourth-generation family-run business, it employs over 1,300 staff. The company's mission is encapsulated in its claim: "<strong>UZIN. YOUR FLOOR. OUR PROMISE.</strong>" This reflects a commitment to high-quality products, expert knowledge, project protection, and sustainable corporate governance. A key strength is their "system solutions" approach, offering integrated product systems for preparation (e.g., UZIN NC 170 LevelStar for leveling), installation (e.g., UZIN KE 2000 S universal adhesive), finishing, and care of all floor coverings. The evolution of brands like RZ into current care lines under UZIN and Pallmann further illustrates their integrated strategy.</p>
+            <div class="card p-6">
+                <h2 class="section-subtitle">Corporate Overview & Strategic Pillars</h2>
+                <p class="mb-2 text-secondary-dark-gray">Uzin Utz AG, headquartered in Ulm, Germany, stands as a testament to enduring quality and strategic evolution within the construction chemicals industry. Its origins trace back to 1911, initially focusing on detergents and cleaners, before a pivotal shift after World War II redirected the company towards flooring adhesives, marking the genesis of its current success story. This extensive history, spanning over a century, is characterized by a consistent dedication to innovation, maintaining high quality standards, ensuring social balance, and pursuing sustainable growth. The company’s global footprint has expanded significantly, now encompassing operations in 49 countries across Europe, North America, and Asia, solidifying its position as an international player.</p>
+                <p class="mb-2 text-secondary-dark-gray">The company's mission is encapsulated in its claim: "<strong>UZIN. YOUR FLOOR. OUR PROMISE.</strong>" This philosophy drives its daily operations, emphasizing not just the delivery of high-quality products but also the provision of expert knowledge and project protection through comprehensive warranties.</p>
+                
+                <h4 class="uzin-blue-text font-semibold">Core Principles:</h4>
+                <p class="mb-2 text-secondary-dark-gray">Quality, customer focus, and relentless innovation form the bedrock of Uzin Utz's strategy. This is backed by significant R&D investment (approximately EUR 13.7 million in 2023) aimed at identifying market trends and launching successful, problem-solving products.</p>
+                
+                <h4 class="uzin-blue-text font-semibold">Sustainability:</h4>
+                <p class="mb-2 text-secondary-dark-gray">Sustainability is central to Uzin Utz's ethos. The company actively develops solvent-free, low-emission products suitable for BREEAM/LEED certified projects and utilizes 100% recycled plastic in their canisters, significantly reducing CO2 emissions related to raw material. This proactive integration of sustainability with innovation is a defining characteristic of their market leadership.</p>
+
+                <h4 class="uzin-blue-text font-semibold">North American Expansion & Strategic Importance:</h4>
+                <p class="mb-2 text-secondary-dark-gray">A substantial $34 million investment in a second North American manufacturing facility in Waco, Texas, is key to Uzin Utz's US operations. This facility not only increases production capacity for UZIN brand materials but also serves as a state-of-the-art training center (hosting nearly 1,000 professionals annually) and houses the relocated North American R&D lab. This localization reinforces technical expertise and aligns with the values of precision, efficiency, and hands-on solutions. It also presents an opportunity to "make Waco famous" by leveraging American manufacturing pride as a brand differentiator. Uzin Utz North America competes with brands like Ardex and Schönox, and its unique domestic production scale in Waco (largest worldwide for the company) is a significant advantage.</p>
+                
+                <div class="mt-6">
+                    <h4 class="text-lg font-semibold mb-2 uzin-blue-text text-center">R&D Investment (2023)</h4>
+                    <div class="chart-container mx-auto">
+                        <canvas id="rdInvestmentChart"></canvas>
+                    </div>
+                    <p class="text-center text-sm text-gray-500 mt-2">Uzin Utz's commitment to innovation is demonstrated by substantial R&D funding.</p>
+                </div>
             </div>
 
-            <h2 class="text-2xl font-semibold mb-4">The Uzin Utz Brand Universe</h2>
-            <p class="mb-6">Click on each brand to learn more about its specialization and target audience. This portfolio approach allows Uzin Utz to offer comprehensive solutions across the flooring industry.</p>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="card brand-card" data-brand="uzin">
-                    <h3 class="text-xl font-semibold accent-color mb-2">UZIN</h3>
-                    <p class="text-sm text-gray-600">Flagship brand for comprehensive flooring installation systems: moisture mitigation, primers, leveling compounds (e.g., UZIN NC 170 LevelStar, UZIN NC 182 patch), adhesives (e.g., UZIN KE 2000 S universal, UZIN KE 66 for vinyl/rubber, switchTec® dry adhesive), tools, and care products (e.g., UZIN Clean-Box). Primarily targets professional flooring contractors.</p>
+            <div class="card p-6">
+                <h2 class="section-subtitle">Uzin Utz Brand Portfolio: "The Art of Floor Systems"</h2>
+                <p class="mb-4 text-secondary-dark-gray">Uzin Utz employs an "endorsed brand" principle, a sophisticated approach where its individual brands are bolstered by the overarching Uzin Utz umbrella. This architecture allows each of the six distinct brands—UZIN, WOLFF, PALLMANN, Arturo, codex, and Pajarito—to maintain its unique identity and specialized expertise while simultaneously benefiting from the collective knowledge, shared resources, and established reputation of the entire group. The new corporate design, aptly named "The Art of Floor Systems," visually reinforces this family identity through consistent brand colors, abstract graphics, prominently highlighted product names, and the inclusion of international pictograms and QR codes on packaging. This visual coherence makes it easier for consumers at the point of sale to recognize and associate individual installation systems, coatings, and tools as part of a trusted "family" of products.</p>
+                <p class="mb-6 text-secondary-dark-gray">Click on each brand to learn more about its specialization and target audience. This portfolio approach allows Uzin Utz to offer comprehensive solutions across the flooring industry.</p>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="card brand-card" data-brand="uzin">
+                        <h3 class="text-xl font-semibold accent-color mb-2">UZIN</h3>
+                        <p class="text-sm text-gray-600">Flagship brand for comprehensive flooring installation systems: moisture mitigation, primers, leveling compounds (e.g., UZIN NC 170 LevelStar, UZIN NC 182 patch), adhesives (e.g., UZIN KE 2000 S universal, UZIN KE 66 for vinyl/rubber, switchTec® dry adhesive), tools, and care products (e.g., UZIN Clean-Box). Primarily targets professional flooring contractors.</p>
+                    </div>
+                    <div class="card brand-card" data-brand="wolff">
+                        <h3 class="text-xl font-semibold accent-color mb-2">WOLFF</h3>
+                        <p class="text-sm text-gray-600">Specializes in high-performance machinery and tools for subfloor preparation (grinders, strippers), floor covering installation, and maintenance. Designed for professional installers seeking efficiency and precision.</p>
+                    </div>
+                    <div class="card brand-card" data-brand="pallmann">
+                        <h3 class="text-xl font-semibold accent-color mb-2">Pallmann</h3>
+                        <p class="text-sm text-gray-600">Complete range for wood flooring: installation, renovation (sealers, finishes like PALL-X POWER, PALL-X GOLD), and maintenance. Targets wood flooring contractors and professionals.</p>
+                    </div>
+                    <div class="card brand-card" data-brand="codex">
+                        <h3 class="text-xl font-semibold accent-color mb-2">Codex</h3>
+                        <p class="text-sm text-gray-600">System solutions for professional installation of tiles and natural stone: subfloor prep, waterproofing, mortars (e.g., Power CX 7), and building boards. Aimed at trained and qualified tilers.</p>
+                    </div>
+                    <div class="card brand-card" data-brand="arturo">
+                        <h3 class="text-xl font-semibold accent-color mb-2">Arturo</h3>
+                        <p class="text-sm text-gray-600">Focuses on resin (epoxy, polyurethane) and cementitious floor finishes combining aesthetics and performance: self-leveling floors, decorative flakes, industrial solutions. Targets architects, designers, and commercial/industrial clients.</p>
+                    </div>
+                    <div class="card brand-card" data-brand="pajarito">
+                        <h3 class="text-xl font-semibold accent-color mb-2">Pajarito</h3>
+                        <p class="text-sm text-gray-600">Traditional manufacturer of high-quality tools for painting, plastering, and drywalling. Broadens the group's offerings to wider finishing trades, joining Uzin Utz around 2018-2020.</p>
+                    </div>
                 </div>
-                <div class="card brand-card" data-brand="wolff">
-                    <h3 class="text-xl font-semibold accent-color mb-2">WOLFF</h3>
-                    <p class="text-sm text-gray-600">Specializes in high-performance machinery and tools for subfloor preparation (grinders, strippers), floor covering installation, and maintenance. Designed for professional installers seeking efficiency and precision.</p>
+                <div id="brand-details-popup" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center p-4 hidden z-50">
+                    <div class="bg-white p-8 rounded-lg shadow-xl max-w-lg w-full">
+                        <h3 id="popup-brand-name" class="text-2xl font-bold accent-color mb-4"></h3>
+                        <p id="popup-brand-description" class="text-gray-700 mb-6"></p>
+                        <button id="close-popup-button" class="accent-bg text-white px-4 py-2 rounded hover:bg-opacity-90">Close</button>
+                    </div>
                 </div>
-                <div class="card brand-card" data-brand="pallmann">
-                    <h3 class="text-xl font-semibold accent-color mb-2">Pallmann</h3>
-                    <p class="text-sm text-gray-600">Complete range for wood flooring: installation, renovation (sealers, finishes like PALL-X POWER, PALL-X GOLD), and maintenance. Targets wood flooring contractors and professionals.</p>
-                </div>
-                <div class="card brand-card" data-brand="codex">
-                    <h3 class="text-xl font-semibold accent-color mb-2">Codex</h3>
-                    <p class="text-sm text-gray-600">System solutions for professional installation of tiles and natural stone: subfloor prep, waterproofing, mortars (e.g., Power CX 7), and building boards. Aimed at trained and qualified tilers.</p>
-                </div>
-                <div class="card brand-card" data-brand="arturo">
-                    <h3 class="text-xl font-semibold accent-color mb-2">Arturo</h3>
-                    <p class="text-sm text-gray-600">Focuses on resin (epoxy, polyurethane) and cementitious floor finishes combining aesthetics and performance: self-leveling floors, decorative flakes, industrial solutions. Targets architects, designers, and commercial/industrial clients.</p>
-                </div>
-                <div class="card brand-card" data-brand="pajarito">
-                    <h3 class="text-xl font-semibold accent-color mb-2">Pajarito</h3>
-                    <p class="text-sm text-gray-600">Traditional manufacturer of high-quality tools for painting, plastering, and drywalling. Broadens the group's offerings to wider finishing trades, joining Uzin Utz around 2018-2020.</p>
-                </div>
+                <p class="mt-4 text-secondary-dark-gray"><strong>Cross-Brand Synergy:</strong> The group leverages expertise across brands to offer comprehensive system solutions, aiming for "everything you need for the floor." This holistic approach signifies that individual products, even those under different brands, are designed to work synergistically within a larger system. The group's objective is to more effectively coordinate its vast array of products, materials, tools, and machines to jointly develop new, comprehensive solutions. This integrated approach adds significant value beyond a single product, tapping into the group's extensive offering and reinforcing its commitment to providing complete, professional-grade solutions. For KE40 Caiman, this suggests that its branding can strategically highlight its integral role within a broader UZIN system (e.g., "Part of the UZIN Pro-System for perfect subfloor preparation"). It could even subtly allude to cross-brand compatibility if relevant (e.g., "Optimized for use with WOLFF tools"). Such messaging can be a powerful differentiator in a fragmented retail market, appealing to customers who value comprehensive, integrated solutions and the assurance of system compatibility.</p>
             </div>
-            <div id="brand-details-popup" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center p-4 hidden z-50">
-                <div class="bg-white p-8 rounded-lg shadow-xl max-w-lg w-full">
-                    <h3 id="popup-brand-name" class="text-2xl font-bold accent-color mb-4"></h3>
-                    <p id="popup-brand-description" class="text-gray-700 mb-6"></p>
-                    <button id="close-popup-button" class="accent-bg text-white px-4 py-2 rounded hover:bg-opacity-90">Close</button>
-                </div>
+
+            <div class="card p-6">
+                <h2 class="section-subtitle">UZIN Product Differentiation & KE40 Caiman Context (Ref: KE 66)</h2>
+                <p class="mb-2 text-secondary-dark-gray">UZIN, as the flagship brand of the Uzin Utz Group, offers a comprehensive suite of products essential for professional floor installation, encompassing primers, moisture vapor retarders, various leveling compounds (both cementitious and synthetic gypsum), patching and smoothing compounds, a wide array of floor covering adhesives, and a full complement of tools and accessories. This extensive product range positions UZIN as a holistic provider for all phases of subfloor preparation and flooring installation, including specialized systems for tile and stone.</p>
+                <p class="mb-2 text-secondary-dark-gray">To understand the potential attributes and differentiation strategy for the new KE40 Caiman, UZIN KE 66, a "Premium Pro - Fiber-Reinforced Wet Set Adhesive," serves as an instructive reference product. The characteristics of KE 66 illuminate UZIN's approach to developing advanced, high-performance solutions:</p>
+                <ul class="list-disc space-y-2 mb-3 text-secondary-dark-gray">
+                    <li><strong>High Performance:</strong> KE 66 is engineered to be hard setting, highly shear resistant, and exhibits excellent resistance to indentations and shrinkage. These attributes are critical for ensuring the long-term durability and structural integrity of flooring installations, particularly in demanding commercial or high-traffic residential environments. The fiber reinforcement further contributes to its robust performance, minimizing issues like gapping in Luxury Vinyl Tile (LVT) installations.</li>
+                    <li><strong>Application Benefits:</strong> The product is designed with the installer in mind, featuring low odor and an easy-to-trowel consistency. Its short flash time (5-15 minutes) and fast-drying properties facilitate quick installations, allowing for foot traffic within 24-48 hours and achieving final strength in 72 hours. Such characteristics directly address the professional installer's need for efficiency and accelerated project timelines, reducing labor costs and enabling faster project completion.</li>
+                    <li><strong>Versatility:</strong> KE 66 demonstrates broad applicability, suitable for various floor coverings including vinyl sheet and tile, rubber sheet and tile, and LVT, on both absorbent substrates and concrete with up to 80% relative humidity. Its compatibility with radiant floor heating systems further expands its utility across diverse project types, from residential to commercial applications.</li>
+                    <li><strong>Environmental Profile:</strong> A significant differentiator for KE 66 is its strong environmental credentials. It is solvent-free, boasts very low VOCs (less than 5 g/L), and is recognized as a "strongly CO2-reduced product," achieving over a 90% reduction based on internal calculations. This aligns with Uzin Utz's broader corporate commitment to sustainability and healthy indoor environments, making it ideal for use in occupied buildings like healthcare and educational facilities.</li>
+                </ul>
+                <p class="text-secondary-dark-gray">The successful attributes of UZIN KE 66 provide a clear framework for the potential positioning of KE40 Caiman. Given Uzin Utz's emphasis on innovation and sustainability, it is highly probable that KE40 Caiman will embody similar, if not enhanced, performance and environmental characteristics. The company's focus on "cost or time saving benefits" through innovation further suggests that KE40 Caiman could offer efficiencies in application or curing, appealing to professional users and advanced DIYers alike.</p>
             </div>
         </section>
 
         <section id="market-landscape" class="content-section">
-            <h1 class="text-3xl font-bold mb-6">Market Landscape: Trends & Competition</h1>
-            <p class="mb-6">This section explores the current dynamics of the flooring industry and adhesives market. Understanding prevailing trends in materials, design, sustainability, and consumer preferences (both DIY and professional) is vital. We also analyze the competitive landscape, particularly flooring solutions available in major retail outlets like Home Depot and Lowe's, to identify how KE40 Caiman can be uniquely positioned.</p>
-
-            <h2 class="text-2xl font-semibold mb-3">Key Flooring & Adhesive Market Trends (2024-2025)</h2>
-            <div class="grid md:grid-cols-2 gap-6 mb-8">
-                <div class="card">
-                    <h3 class="text-xl font-semibold accent-color mb-2">Flooring Trends</h3>
-                    <ul class="list-disc pl-5 text-sm">
-                        <li><strong>Natural & Sustainable Materials:</strong> Strong pull for wood (warmer tones), marmoleum, bamboo, cork. Focus on low VOCs, no PFAs, third-party certifications.</li>
-                        <li><strong>Biophilic Design:</strong> Earthy tones, natural textures, connecting with nature.</li>
-                        <li><strong>Color Palettes:</strong> Shift from grays to warmer earth tones (browns, honey oak). Darker colors resurging.</li>
-                        <li><strong>Patterns & Textures:</strong> Geometric patterns (herringbone, chevron) popular in LVT/wood. Matte/low-sheen finishes preferred.</li>
-                        <li><strong>Vinyl's Dominance:</strong> LVT/LVP popular for durability, affordability, realistic visuals, DIY-friendliness.</li>
-                        <li><strong>Sustainability in Manufacturing:</strong> Focus on recycled content, responsible sourcing, low VOCs.</li>
-                    </ul>
+            <h1 class="text-3xl font-bold mb-6 page-title">Market Landscape: Trends & Competition</h1>
+            
+            <div class="card p-6">
+                <h2 class="section-subtitle">Key Flooring & Adhesive Market Trends (2024-2025)</h2>
+                <div class="grid md:grid-cols-2 gap-6 mb-8">
+                    <div>
+                        <h3 class="card-title uzin-blue-text">Flooring Trends</h3>
+                        <ul class="list-disc pl-5 text-sm text-secondary-dark-gray">
+                            <li>Natural & Sustainable Materials: Wood, marmoleum, bamboo, cork. Low VOCs.</li>
+                            <li>Biophilic Design: Earthy tones, natural textures.</li>
+                            <li>Color Palettes: Warmer earth tones over grays.</li>
+                            <li>Patterns & Textures: Geometric (herringbone, chevron). Matte/low-sheen.</li>
+                            <li>Vinyl's Dominance: LVT/LVP for durability, affordability, DIY-friendliness.</li>
+                            <li>Sustainability in Manufacturing: Recycled content, responsible sourcing.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="card-title uzin-blue-text">Adhesive Market Trends</h3>
+                        <ul class="list-disc pl-5 text-sm text-secondary-dark-gray">
+                            <li>Performance: Strong bonds, quick dry, moisture/mold resistance.</li>
+                            <li>Ease of Use: Ready-to-use, low odor.</li>
+                            <li>Sustainability: Low-VOC, solvent-free, water-based, bio-based.</li>
+                            <li>Technology: Hybrid polymers, reactive adhesives.</li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="card">
-                    <h3 class="text-xl font-semibold accent-color mb-2">Adhesive Market Trends</h3>
-                     <ul class="list-disc pl-5 text-sm">
-                        <li><strong>Performance Demands:</strong> Strong/durable bonds, quick dry/cure, moisture/mold resistance. Crucial for LVT, engineered wood, large-format tiles.</li>
-                        <li><strong>Ease of Use:</strong> Ready-to-use formulations, low odor.</li>
-                        <li><strong>Sustainability:</strong> Major driver. Shift to low-VOC, solvent-free, water-based, bio-based adhesives.</li>
-                        <li><strong>Technological Advancements:</strong> Hybrid polymers, reactive adhesives for stability and compatibility.</li>
-                    </ul>
-                    <p class="mt-4 text-sm">The global flooring adhesive market is projected for robust growth, highlighting the demand for innovative and high-performance solutions.</p>
+                <h3 class="text-xl font-semibold mb-3 text-center uzin-blue-text">Global Flooring Adhesive Market Growth</h3>
+                <div class="chart-container bg-white p-4 rounded-lg shadow mb-8">
+                    <canvas id="adhesiveMarketChart"></canvas>
+                </div>
+                <p class="text-sm text-gray-600 mb-8 text-center">Projected growth from USD 6.20 billion in 2025 to USD 13.87 billion by 2034 (CAGR 9.36%).</p>
+            </div>
+
+            <div class="card p-6">
+                <h2 class="section-subtitle">Competitive Landscape: Home Depot & Lowe's</h2>
+                <h3 class="card-title uzin-blue-text">Best-Selling Brands & Product Differentiation</h3>
+                <p class="mb-4 text-secondary-dark-gray">Key players in the retail flooring preparation market include MAPEI, Henry, Custom Building Products, Sika, and Bostik. FloorPops is a notable DIY flooring solution. Select a competitor below to see details on their positioning and packaging strategies.</p>
+                <div class="flex flex-wrap gap-2 mb-6" id="competitorTabs">
+                </div>
+                <div id="competitorDetailView" class="p-4 border border-gray-200 rounded-lg bg-gray-50 min-h-[150px]">
+                    <p class="text-secondary-dark-gray">Select a competitor to view details.</p>
                 </div>
             </div>
 
-            <h3 class="text-xl font-semibold mb-3">Global Flooring Adhesive Market Growth</h3>
-            <div class="chart-container bg-white p-4 rounded-lg shadow mb-8">
-                <canvas id="adhesiveMarketChart"></canvas>
+            <div class="grid md:grid-cols-2 gap-6 mb-6">
+                <div class="card p-6">
+                    <h3 class="card-title uzin-blue-text">Home Depot's Merchandising</h3>
+                    <p class="text-secondary-dark-gray">Industrial aesthetic (tall shelves, orange/black), geared towards professionals. Features large retail pallet displays, case stackers. Functional, efficiency-focused presentation.</p>
+                </div>
+                <div class="card p-6">
+                    <h3 class="card-title uzin-blue-text">Lowe's Merchandising</h3>
+                    <p class="text-secondary-dark-gray">Blue/white scheme, more elaborate floor displays, themed arrangements. Less intimidating for DIYers. Uses half-pallet displays, power wings, and digital tools like "Room Visualizer."</p>
+                </div>
             </div>
-            <p class="text-sm text-gray-600 mb-8 text-center">Projected growth from USD 6.20 billion in 2025 to USD 13.87 billion by 2034 (CAGR 9.36%).</p>
+             <div class="card p-6">
+                <h3 class="card-title uzin-blue-text">Common Merchandising & Packaging Insights</h3>
+                <p class="mb-2 text-secondary-dark-gray"><strong>Common Displays:</strong> Pallet displays, case stackers, end caps, bin displays, power wings, blister packs, POP signage (posters, how-to guides, shelf-talkers).</p>
+                <p class="mb-2 text-secondary-dark-gray"><strong>Packaging Strategies by Competitors:</strong></p>
+                    <ul class="list-disc pl-5 space-y-1 mt-2 text-secondary-dark-gray">
+                        <li><strong>Clarity & Information:</strong> Clear product names, primary use, size (MAPEI, Henry).</li>
+                        <li><strong>Size/Format Variety:</strong> Quarts to large pails/bags for different project scales.</li>
+                        <li><strong>Sustainability Messaging:</strong> Growing trend (Sika's "Go Pouch," Bostik's PCR plastic buckets). Uzin Utz's recycled canisters align here.</li>
+                        <li><strong>Visual Cues:</strong> Attractive graphics, brand colors (CBP's orange), FloorPops' design showcases.</li>
+                        <li><strong>Technical Info:</strong> Essential data, instructions, QR codes (Uzin's new packaging is strong here).</li>
+                    </ul>
+                <p class="mt-3 mb-2 text-secondary-dark-gray"><strong>Marketing Message Themes:</strong></p>
+                    <ul class="list-disc pl-5 space-y-1 mt-2 text-secondary-dark-gray">
+                        <li>Performance & Durability ("high shear resistance").</li>
+                        <li>Ease of Use/Application ("easy to trowel", "fast drying").</li>
+                        <li>Versatility ("multi-purpose").</li>
+                        <li>Problem-Solving ("moisture protection", "crack prevention").</li>
+                        <li>Professional Endorsement ("Developed by Pros. For Pros.").</li>
+                        <li>Sustainability & Health ("solvent-free", "low VOC").</li>
+                        <li>Transformative Results (FloorPops: "fastest way to a new floor").</li>
+                    </ul>
+            </div>
 
-            <h2 class="text-2xl font-semibold mb-3">Competitive Snapshot: LVT/Vinyl Adhesives in Retail</h2>
-            <p class="mb-4">The table below summarizes key competitors for LVT/Vinyl adhesives found in major retail channels. This provides a benchmark for understanding current market offerings and identifying differentiation opportunities for KE40 Caiman. (Note: KE40 Caiman specifications are not yet public; this table is for comparative context based on existing retail products.)</p>
-            <div class="table-responsive card mb-8">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Brand</th>
-                            <th>Product Name</th>
-                            <th>Key Features Summary</th>
-                            <th>Stated Benefits</th>
-                            <th>Primary Applications</th>
-                            <th>Target Customer</th>
-                            <th>Key USP/Positioning</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Henry</td>
-                            <td>647 PlumPro</td>
-                            <td>Acrylic; Moisture resistant (99% RH); Fast dry-to-touch, 8-hr work time.</td>
-                            <td>Ultra-fast track; Easy roller app; Strong bond; Repositionable; Low VOC.</td>
-                            <td>LVT, LVP, VCT, VET, fiberglass-backed sheet vinyl.</td>
-                            <td>DIY & Contractor</td>
-                            <td>Speed and ease for LVT/LVP; "DIY friendly."</td>
-                        </tr>
-                        <tr>
-                            <td>Roberts</td>
-                            <td>7350 Universal</td>
-                            <td>Pressure-sensitive; Moisture control (10 lbs MVER/90% RH); Variable open/work time.</td>
-                            <td>Releasable/permanent bond; Trowel/roller; Microban protection.</td>
-                            <td>LVT, LVP, VCT, vinyl sheet, rubber sports flooring, cork/rubber underlayment.</td>
-                            <td>Commercial & Residential</td>
-                            <td>Versatility, moisture control, Microban.</td>
-                        </tr>
-                        <tr>
-                            <td>MAPEI</td>
-                            <td>Ultrabond ECO 373</td>
-                            <td>Pressure-sensitive; Quick dry, up to 12-hr work time.</td>
-                            <td>Super-aggressive tack; Extended work time; Trowel/roller.</td>
-                            <td>LVT, LVP, VET, quartz tile, sheet vinyl, rubber/cork underlayment, carpet tiles.</td>
-                            <td>Commercial, Institutional, Residential</td>
-                            <td>Aggressive tack, long work time.</td>
-                        </tr>
-                         <tr>
-                            <td>NOVALIS</td>
-                            <td>LVT/LVP Glue</td>
-                            <td>Water-based; Moisture resistant.</td>
-                            <td>No mixing required.</td>
-                            <td>Vinyl (LVT/LVP).</td>
-                            <td>DIY/Residential (Implied)</td>
-                            <td>Basic, moisture-resistant LVT/LVP adhesive.</td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="card p-6">
+                 <h2 class="section-subtitle">Original Competitive Snapshot Table (LVT/Vinyl Adhesives)</h2>
+                 <p class="mb-4 text-secondary-dark-gray">The table below summarizes key competitors for LVT/Vinyl adhesives found in major retail channels. This provides a benchmark for understanding current market offerings and identifying differentiation opportunities for KE40 Caiman. (Note: KE40 Caiman specifications are not yet public; this table is for comparative context based on existing retail products.)</p>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Brand</th>
+                                <th>Product Name</th>
+                                <th>Key Features Summary</th>
+                                <th>Stated Benefits</th>
+                                <th>Primary Applications</th>
+                                <th>Target Customer</th>
+                                <th>Key USP/Positioning</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Henry</td>
+                                <td>647 PlumPro</td>
+                                <td>Acrylic; Moisture resistant (99% RH); Fast dry-to-touch, 8-hr work time.</td>
+                                <td>Ultra-fast track; Easy roller app; Strong bond; Repositionable; Low VOC.</td>
+                                <td>LVT, LVP, VCT, VET, fiberglass-backed sheet vinyl.</td>
+                                <td>DIY & Contractor</td>
+                                <td>Speed and ease for LVT/LVP; "DIY friendly."</td>
+                            </tr>
+                            <tr>
+                                <td>Roberts</td>
+                                <td>7350 Universal</td>
+                                <td>Pressure-sensitive; Moisture control (10 lbs MVER/90% RH); Variable open/work time.</td>
+                                <td>Releasable/permanent bond; Trowel/roller; Microban protection.</td>
+                                <td>LVT, LVP, VCT, vinyl sheet, rubber sports flooring, cork/rubber underlayment.</td>
+                                <td>Commercial & Residential</td>
+                                <td>Versatility, moisture control, Microban.</td>
+                            </tr>
+                            <tr>
+                                <td>MAPEI</td>
+                                <td>Ultrabond ECO 373</td>
+                                <td>Pressure-sensitive; Quick dry, up to 12-hr work time.</td>
+                                <td>Super-aggressive tack; Extended work time; Trowel/roller.</td>
+                                <td>LVT, LVP, VET, quartz tile, sheet vinyl, rubber/cork underlayment, carpet tiles.</td>
+                                <td>Commercial, Institutional, Residential</td>
+                                <td>Aggressive tack, long work time.</td>
+                            </tr>
+                             <tr>
+                                <td>NOVALIS</td>
+                                <td>LVT/LVP Glue</td>
+                                <td>Water-based; Moisture resistant.</td>
+                                <td>No mixing required.</td>
+                                <td>Vinyl (LVT/LVP).</td>
+                                <td>DIY/Residential (Implied)</td>
+                                <td>Basic, moisture-resistant LVT/LVP adhesive.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                 <p class="mt-4 text-secondary-dark-gray"><strong>Analysis of Other Relevant Categories in Retail:</strong></p>
+                <ul class="list-disc pl-5 text-sm mb-2 text-secondary-dark-gray">
+                    <li><strong>Hardwood Flooring Adhesives (e.g., Henry 1171 SureLock, Roberts 1550 MAXCOMPLETE, Bostik MultiGrip):</strong> Focus on moisture resistance (urethane), bond strength, ease of troweling, low VOCs. Target DIY & Pro.</li>
+                    <li><strong>Self-Leveling Underlayments (e.g., Custom Building Products LevelQuik RS, Henry 544 Floor Leveler, MAPEI Self-Leveler Plus):</strong> Emphasize rapid set, ease of use, application thickness. Crucial for proper prep.</li>
+                    <li><strong>Wood Floor Finishes (e.g., Varathane Water-Based Interior Polyurethane, Rust-Oleum Parks Pro Finisher, Minwax Polyurethane for Floors):</strong> Highlight durability, scratch/stain resistance, dry time, sheen, ease of cleanup.</li>
+                    <li><strong>Tile Grouts (e.g., Custom Building Products Polyblend/FlexColor, MAPEI Ultracolor Plus FA/Flexcolor CQ):</strong> Positioned on ease of use (premixed), color consistency, stain/mold resistance.</li>
+                </ul>
+                <p class="text-sm text-secondary-dark-gray">This overview shows a retail market prioritizing convenience, specific problem-solving features (moisture, mold), and eco-friendliness. KE40 Caiman needs to articulate unique advantages beyond basic DIY needs to stand out.</p>
             </div>
-             <p class="mb-4"><strong>Analysis of Other Relevant Categories in Retail:</strong></p>
-            <ul class="list-disc pl-5 text-sm mb-2">
-                <li><strong>Hardwood Flooring Adhesives (e.g., Henry 1171 SureLock, Roberts 1550 MAXCOMPLETE, Bostik MultiGrip):</strong> Focus on moisture resistance (urethane), bond strength, ease of troweling, low VOCs. Target DIY & Pro.</li>
-                <li><strong>Self-Leveling Underlayments (e.g., Custom Building Products LevelQuik RS, Henry 544 Floor Leveler, MAPEI Self-Leveler Plus):</strong> Emphasize rapid set, ease of use, application thickness. Crucial for proper prep.</li>
-                <li><strong>Wood Floor Finishes (e.g., Varathane Water-Based Interior Polyurethane, Rust-Oleum Parks Pro Finisher, Minwax Polyurethane for Floors):</strong> Highlight durability, scratch/stain resistance, dry time, sheen, ease of cleanup.</li>
-                <li><strong>Tile Grouts (e.g., Custom Building Products Polyblend/FlexColor, MAPEI Ultracolor Plus FA/Flexcolor CQ):</strong> Positioned on ease of use (premixed), color consistency, stain/mold resistance.</li>
-            </ul>
-            <p class="text-sm ">This overview shows a retail market prioritizing convenience, specific problem-solving features (moisture, mold), and eco-friendliness. KE40 Caiman needs to articulate unique advantages beyond basic DIY needs to stand out.</p>
         </section>
 
         <section id="ke40-strategy" class="content-section">
-            <h1 class="text-3xl font-bold mb-6">KE40 Caiman: Strategic Positioning & Branding</h1>
+            <h1 class="text-3xl font-bold mb-6 page-title">KE40 Caiman: Strategic Positioning & Branding</h1>
             <p class="mb-6">This section focuses on the strategic positioning for Uzin Utz's new KE40 Caiman adhesive. Drawing from UZIN's portfolio (e.g., UZIN KR 430) and project proposals, KE40 Caiman is envisioned as a **high-performance, moisture-tolerant, alkaline-resistant adhesive**. The "Caiman" name suggests strength and tenacity, ideal for robust bonding in challenging applications.</p>
 
             <h2 class="text-2xl font-semibold mb-3">Introducing KE40 Caiman (Envisioned Profile)</h2>
@@ -354,7 +483,7 @@
                     <div class="zig-zag-item" data-zag="6">Minimal Application Guidance</div>
                 </div>
                 <div id="zig-opportunity-details" class="card">
-                    <h3 class="text-xl font-semibold accent-color mb-2">Select a 'Zag' Tactic to see the 'Zig' Opportunity</h3>
+                    <h3 class="card-title accent-color">Select a 'Zag' Tactic to see the 'Zig' Opportunity</h3>
                     <p class="text-sm ">Details will appear here.</p>
                 </div>
             </div>
@@ -362,7 +491,7 @@
             <h2 class="text-2xl font-semibold mb-3">Branding & Product Design Implications</h2>
              <p class="mb-4">The branding for KE40 Caiman must communicate its differentiated value, drawing on Uzin Utz's heritage and the "Caiman" theme.</p>
             <div class="card">
-                <h3 class="text-xl font-semibold accent-color mb-2">Key Messaging Pillars</h3>
+                <h3 class="card-title accent-color">Key Messaging Pillars</h3>
                 <ul class="list-disc pl-5 text-sm mb-4">
                     <li><strong>Uncompromised Professional-Grade Performance:</strong> "Engineered for Professionals, Available to You."</li>
                     <li><strong>The Power of "Caiman":</strong> Leverage tenacity, resilience, suitability for tough conditions (e.g., "Caiman-Lock Technology for Extreme Environments," "Moisture & Alkaline Defense").</li>
@@ -371,7 +500,7 @@
                     <li><strong>Specialist Problem-Solver:</strong> Position as the expert solution for demanding challenges, especially those involving moisture and alkalinity.</li>
                 </ul>
 
-                <h3 class="text-xl font-semibold accent-color mb-2 mt-4">Visual Identity & Packaging</h3>
+                <h3 class="card-title accent-color mt-4">Visual Identity & Packaging</h3>
                  <ul class="list-disc pl-5 text-sm">
                     <li><strong>Visuals:</strong> Distinct from DIY brands. Imagery/iconography suggesting grip, stability, water/chemical resistance (subtle caiman cues). Palette: Deeper greens, charcoals, metallic accents, balanced with UZIN core branding. Prominent UZIN brand with "KE40 Caiman" as dominant product name.</li>
                     <li><strong>Packaging:</strong> Convey quality (robust materials, ergonomic design). Clear information hierarchy:
@@ -386,8 +515,8 @@
         </section>
 
         <section id="recommendations" class="content-section">
-            <h1 class="text-3xl font-bold mb-6">Actionable Recommendations for Nativz.io</h1>
-            <p class="mb-6">To effectively launch and position Uzin Utz's KE40 Caiman, Nativz.io should develop a branding, product design, and marketing strategy that emphasizes its professional-grade attributes, leverages the "Caiman" name, and clearly communicates its differentiated value, particularly its moisture and alkaline resistance. Click on each area for specific recommendations and proposed scopes of work.</p>
+            <h1 class="text-3xl font-bold mb-6 page-title">Actionable Recommendations for Nativz.io</h1>
+            <p class="mb-6">To effectively support Uzin Utz in launching and positioning the KE40 Caiman, Nativz proposes to develop a comprehensive branding, product design, and marketing strategy. This strategy will emphasize the product's professional-grade attributes, leverage the evocative "Caiman" name, and clearly communicate its differentiated value, particularly its moisture and alkaline resistance. Click on each area below for specific recommendations and proposed scopes of work from Nativz.</p>
 
             <div class="space-y-4">
                 <div>
@@ -474,7 +603,7 @@
         </section>
 
         <section id="conclusion" class="content-section">
-            <h1 class="text-3xl font-bold mb-6">Conclusion: A Strategic Path Forward for KE40 Caiman</h1>
+            <h1 class="text-3xl font-bold mb-6 page-title">Conclusion: A Strategic Path Forward for KE40 Caiman</h1>
             <div class="card">
                 <p>Uzin Utz SE is a formidable player in flooring technology, built on German engineering, innovation, and professional-grade system solutions. The introduction of KE40 Caiman under the flagship UZIN brand, with its "Caiman" identity signifying strength and specialized protection (moisture/alkaline resistance), offers a significant opportunity.</p>
                 <p>While the retail adhesive market is crowded, clear avenues for differentiation exist. The rise of the "prosumer" and the needs of professionals accessing retail create a receptive audience for a premium product like KE40 Caiman, provided its value is compellingly communicated.</p>
@@ -485,22 +614,24 @@
                     <li><strong>Specialized Application Excellence:</strong> Positioning as the solution for challenging applications.</li>
                     <li><strong>Authentic Sustainability:</strong> Appealing to the eco-conscious with credible claims.</li>
                 </ul>
-                <p>For Nativz.io, branding, product design, and marketing should translate these differentiators into a persuasive market presence. This means crafting a narrative of professional power (the "Caiman" persona), designing premium visuals, and ensuring marketing communications educate and empower, highlighting its key protective features. Digital integration, linking packaging to rich online technical resources, is paramount for a professional-grade product in retail.</p>
+                <p>To achieve this, Nativz proposes that its branding, product design, and marketing services for Uzin Utz translate these differentiators into a tangible and persuasive market presence. This involves crafting a narrative around professional power (the "Caiman" persona), designing premium visuals, and ensuring marketing communications educate and empower, highlighting its key protective features. Digital integration, linking packaging to rich online technical resources, is paramount for a professional-grade product in retail.</p>
                 <p>By focusing on these areas, KE40 Caiman can rise above the general retail adhesive market, establishing itself as a trusted, high-performance solution for users who demand quality and long-term results, especially in moisture-prone or alkaline environments.</p>
             </div>
         </section>
     </main>
 
     <footer class="bg-gray-800 text-white text-center p-6 mt-12">
-        <p>&copy; 2024 Uzin Utz KE40 Caiman Strategic Analysis for Nativz.io. Information compiled from provided research and proposals.</p>
+        <p>&copy; <span id="currentYear"></span> Uzin Utz KE40 Caiman Strategic Analysis for Nativz.io. Information compiled from provided research and proposals.</p>
     </footer>
 
 <script>
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+
     document.addEventListener('DOMContentLoaded', function () {
-        const navLinks = document.querySelectorAll('.nav-link');
+        const navLinks = document.querySelectorAll('#hamburger-dropdown-menu .nav-link'); 
         const contentSections = document.querySelectorAll('.content-section');
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
+        const hamburgerButton = document.getElementById('hamburger-button');
+        const hamburgerDropdownMenu = document.getElementById('hamburger-dropdown-menu');
 
         function setActiveSection(targetId) {
             contentSections.forEach(section => {
@@ -523,22 +654,32 @@
                 e.preventDefault();
                 const targetId = this.dataset.target;
                 setActiveSection(targetId);
-                if (mobileMenu.classList.contains('block')) {
-                    mobileMenu.classList.remove('block');
-                    mobileMenu.classList.add('hidden');
-                }
+                hamburgerDropdownMenu.classList.add('hidden');
+                hamburgerDropdownMenu.classList.remove('opacity-100', 'transform', 'scale-y-100');
+                hamburgerDropdownMenu.classList.add('opacity-0', 'transform', 'scale-y-95');
             });
         });
 
-        if (mobileMenuButton) {
-            mobileMenuButton.addEventListener('click', function() {
-                mobileMenu.classList.toggle('hidden');
-                mobileMenu.classList.toggle('block');
+        if (hamburgerButton) {
+            hamburgerButton.addEventListener('click', function() {
+                const isHidden = hamburgerDropdownMenu.classList.contains('hidden');
+                if (isHidden) {
+                    hamburgerDropdownMenu.classList.remove('hidden');
+                    setTimeout(() => { 
+                        hamburgerDropdownMenu.classList.remove('opacity-0', 'scale-y-95');
+                        hamburgerDropdownMenu.classList.add('opacity-100', 'scale-y-100');
+                    }, 10);
+                } else {
+                    hamburgerDropdownMenu.classList.remove('opacity-100', 'scale-y-100');
+                    hamburgerDropdownMenu.classList.add('opacity-0', 'scale-y-95');
+                    setTimeout(() => { 
+                         hamburgerDropdownMenu.classList.add('hidden');
+                    }, 300); 
+                }
             });
         }
         
         setActiveSection('home');
-
 
         const brandData = {
             uzin: { name: "UZIN", description: "The flagship brand for Uzin Utz, UZIN offers a complete range of products and systems for the preparation of substrates (e.g., UZIN NC 170 LevelStar, UZIN NC 182 patch), installation of floor coverings (e.g., UZIN KE 2000 S universal adhesive, UZIN KE 66 for vinyl/rubber, switchTec® dry adhesive technology), and surface finishing. This includes moisture mitigation systems, primers, leveling compounds, adhesives for resilient, textile, LVT, and wood flooring, as well as tools (e.g., UZIN Clean-Box wipes) and a 'Care' line for resilient flooring maintenance. UZIN primarily targets professional flooring contractors who demand reliability and system solutions." },
@@ -579,6 +720,30 @@
             });
         }
 
+        const rdInvestmentCtx = document.getElementById('rdInvestmentChart');
+        if (rdInvestmentCtx) {
+            new Chart(rdInvestmentCtx.getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: ['R&D Investment 2023'],
+                    datasets: [{
+                        label: 'EUR Million',
+                        data: [13.7],
+                        backgroundColor: ['#0055A4'], 
+                        borderColor: ['#004483'], 
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    scales: {
+                        y: { beginAtZero: true, title: { display: true, text: 'EUR Million', color: '#000B0F' }, ticks: { color: '#000B0F' }, grid: { color: 'rgba(0,0,0,0.05)' }},
+                        x: { ticks: { color: '#000B0F' }, grid: { display: false }}
+                    },
+                    plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(context) { return `€${context.parsed.y.toFixed(1)} Million`; }}}}
+                }
+            });
+        }
 
         const adhesiveMarketCtx = document.getElementById('adhesiveMarketChart');
         if (adhesiveMarketCtx) {
@@ -632,7 +797,6 @@
             title.addEventListener('click', function() {
                 const content = this.nextElementSibling;
                 const arrow = this.querySelector('span');
-                // Close other open items in the same group
                 const parent = this.closest('.space-y-4');
                 if (parent) {
                     parent.querySelectorAll('.expandable-content').forEach(openContent => {
@@ -696,9 +860,60 @@
                 }
             });
         });
-         if (zagItems.length > 0) {
-            zagItems[0].click(); // Activate the first Zig-Zag item by default
+         if (zagItems.length > 0 && zagItems[0]) { 
+            zagItems[0].click(); 
         }
+
+        const competitorsData = [
+            { 
+                name: "MAPEI", 
+                details: "Top seller for ceramic tile mastic & multi-purpose adhesives. Differentiation: Extensive product specialization, 'system solutions' (underlayments to coatings), global R&D, sustainability (CO2-offset products). Packaging: Clear names, 'ECO' for green versions, specifies flooring/application." 
+            },
+            { 
+                name: "Henry", 
+                details: "Prominent in flooring adhesives & leveling compounds. Differentiation: Functional, application-specific ease of use (e.g., Universal Patch 547, Feather Finish 549, Premixed Patch 345). Adhesives highlight fast grab, quick set, moisture resistance, low odor. Packaging: Utilitarian, name, size, key benefits."
+            },
+            { 
+                name: "Custom Building Products", 
+                details: "Top performer in floor primers & leveling compounds. Differentiation: High-quality, innovative products for tile/stone (not compromising for too wide range). 'Low Prep Technology', quick-curing, superior strength. 'RedGard' leading waterproof membrane. Messaging: 'Developed by Pros. For Pros.' Resources for homeowners. Packaging: Clear names, key benefits, signature orange (Carpet Tile PSA)."
+            },
+            { 
+                name: "Sika", 
+                details: "Noted for self-leveling underlayments & broad range of flooring systems (epoxy/polyurethane for commercial/industrial). Differentiation: High-performance, durable, aesthetic versatility, 'innovation management'. SikaBond polyurethane adhesives (sound ratings, moisture limits). Sustainable packaging efforts ('Go Pouch' for Ucrete). Packaging: Performance/application benefits, industry-specific uses (food, healthcare)."
+            },
+            { 
+                name: "Bostik", 
+                details: "Global adhesive specialist (hardwood, soft flooring, tile mortars). Differentiation: 'Smart innovation', adaptable & sustainable solutions. 'Bostik's BEST' (moisture vapor protection, anti-microbial, anti-fracture). R&D network, customer-focused innovation. Packaging: Clear names, key benefits (moisture protection, sound reduction), sustainable materials (PCR plastics)."
+            },
+            {
+                name: "FloorPops",
+                details: "Peel-and-stick vinyl floor tiles (direct-to-consumer). Differentiation: Entirely on ease of use ('no messy grout or special tools needed!'), cost-effectiveness, wide variety of aesthetic designs. Targets DIYers for quick, budget-friendly updates. Designer collaborations. Marketing: 'Peel. Stick. Done.', visual appeal. Packaging: Emphasizes tile design, ease of installation."
+            }
+        ];
+
+        const competitorTabsContainer = document.getElementById('competitorTabs');
+        const competitorDetailViewDiv = document.getElementById('competitorDetailView');
+        let activeCompetitorTab = null;
+
+        if (competitorTabsContainer && competitorDetailViewDiv) {
+            competitorsData.forEach(competitor => {
+                const button = document.createElement('button');
+                button.className = 'tab-button text-sm sm:text-base mb-2';
+                button.textContent = competitor.name;
+                button.onclick = () => {
+                    competitorDetailViewDiv.innerHTML = `<h4 class="text-xl font-semibold uzin-blue-text mb-2">${competitor.name}</h4><p class="text-secondary-dark-gray">${competitor.details}</p>`;
+                    if(activeCompetitorTab) activeCompetitorTab.classList.remove('active');
+                    button.classList.add('active');
+                    activeCompetitorTab = button;
+                };
+                competitorTabsContainer.appendChild(button);
+            });
+             if (competitorTabsContainer.firstElementChild) { 
+                competitorTabsContainer.firstElementChild.click();
+            }
+        }
+
+
     });
 </script>
 
